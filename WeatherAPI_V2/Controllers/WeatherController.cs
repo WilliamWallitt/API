@@ -35,16 +35,17 @@ namespace WeatherAPI_V2.Controllers
             IEnumerable<KeyValuePair<string, string>> requestParams = Request.GetQueryNameValuePairs();
             if (requestParams != null)
             {
-                Dictionary<string, object> conditions = new Dictionary<string, object>();
+                List<Tuple<string, object>> conditions = new List<Tuple<string, object>>() { };
 
                 foreach (KeyValuePair<string, string> param in requestParams)
                 {
                     if (param.Key != "separator")
                     {
-                        conditions.Add(param.Key, param.Value);
+                        Tuple<string, object> paramTuple = new Tuple<string, object>(param.Key, param.Value);
+                        conditions.Add(paramTuple);
                     }
                 }
-                IEnumerable<Schema> weatherData = await _dataBase.DbGetData(conditions, separator);
+                IEnumerable<Schema> weatherData = await _dataBase.DbGetData(conditions.AsEnumerable(), separator);
                 return (List<Schema>)weatherData;
             }
             else

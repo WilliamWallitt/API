@@ -60,7 +60,7 @@ namespace WeatherV1
             }
         }
 
-        public async Task<IEnumerable<T>> DbGetData(Dictionary<string, object> conditions = null, string separator="AND")
+        public async Task<IEnumerable<T>> DbGetData(IEnumerable<Tuple<string, object>> conditions = null, string separator="AND")
         {
             try
             {
@@ -88,7 +88,7 @@ namespace WeatherV1
             }
         }
 
-        public async Task DbDeleteData(Dictionary<string, object> conditions = null, string separator="AND")
+        public async Task DbDeleteData(IEnumerable<Tuple<string, object>> conditions = null, string separator="AND")
         {
             try
             {

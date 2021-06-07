@@ -80,9 +80,10 @@ namespace WeatherV1
             
         }
 
-        protected string CreateDeleteQuery(Dictionary<string, object> conditions, string separator="AND")
+        protected string CreateDeleteQuery(IEnumerable<Tuple<string, object>> conditions, string separator = "AND")
         {
             string query;
+
             if (conditions == null)
             {
                 query = "DELETE * FROM " + _internalSchemaTable;
@@ -90,15 +91,17 @@ namespace WeatherV1
             }
 
             query = "DELETE FROM " + _internalSchemaTable + " WHERE ";
-            foreach (KeyValuePair<string, object> condition in conditions)
+
+            foreach (Tuple<string, object> condition in conditions)
             {
-                query += condition.Key + " LIKE '%" + condition.Value.ToString() + "%' " + separator + " ";
+                query += condition.Item1 + " LIKE '%" + condition.Item2.ToString() + "%' " + separator + " ";
             }
+
             return query.Substring(0, query.Length - (separator.Length + 2));
 
         }
 
-        protected string CreateGetQuery(Dictionary<string, object> conditions, string separator="AND")
+        protected string CreateGetQuery(IEnumerable<Tuple<string, object>> conditions, string separator="AND")
         {
             string query;
             if (conditions == null)
@@ -109,9 +112,9 @@ namespace WeatherV1
             else
             {
                 query = "SELECT * FROM " + _internalSchemaTable + " WHERE ";
-                foreach (KeyValuePair<string, object> condition in conditions) 
+                foreach (Tuple<string, object> condition in conditions)
                 {
-                    query += condition.Key + " LIKE '%" + condition.Value.ToString() + "%' " + separator + " ";
+                    query += condition.Item1 + " LIKE '%" + condition.Item2.ToString() + "%' " + separator + " ";
                 }
                 Debug.WriteLine(query.Substring(0, query.Length - (separator.Length + 2)));
                 return query.Substring(0, query.Length - (separator.Length + 2));
